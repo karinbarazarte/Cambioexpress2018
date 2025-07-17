@@ -2,65 +2,149 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cambio Express 2018 - Dashboard</title>
+    <title>Cambio Express 2018</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial; background: #f4f9ff; padding: 20px; color: #333; }
-        h1, h2 { color: #0066cc; }
-        form { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input, select, button { padding: 10px; margin: 5px 0; width: 100%; max-width: 400px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #e0f0ff; }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background: #f2f9ff;
+        }
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(160deg, #0066cc, #00cc99);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            display: block;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .content {
+            flex-grow: 1;
+            padding: 40px;
+        }
+        h1 {
+            color: #0066cc;
+        }
+        form {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005bb5;
+        }
+        table {
+            background: white;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #e0f0ff;
+        }
     </style>
 </head>
 <body>
-    <h1>Bienvenida, Karin 👋</h1>
-    <h2>🔹 Registro de Remesas</h2>
-    <form method="POST">
-        <label>Nombre del cliente:</label><br>
-        <input type="text" name="cliente" required><br>
+    <div class="sidebar">
+        <h2>💱 Cambio Express</h2>
+        <a href="/">🏠 Dashboard</a>
+        <a href="#">💸 Remesas</a>
+        <a href="#">📦 Encomiendas</a>
+        <a href="#">🤝 Colaboradores</a>
+        <a href="#">📊 Reportes</a>
+        <a href="#">⚙️ Configuración</a>
+    </div>
+    <div class="content">
+        <h1>Bienvenida, Karin 👋</h1>
+        <h2>Registro de Remesas</h2>
+        <form method="POST">
+            <label>Nombre del cliente:</label>
+            <input type="text" name="cliente" required>
 
-        <label>País de origen:</label><br>
-        <select name="origen">
-            <option>Perú</option>
-            <option>Chile</option>
-            <option>Colombia</option>
-            <option>México</option>
-        </select><br>
+            <label>País de origen:</label>
+            <select name="origen">
+                <option>Perú</option>
+                <option>Chile</option>
+                <option>Colombia</option>
+                <option>México</option>
+            </select>
 
-        <label>País de destino:</label><br>
-        <select name="destino">
-            <option>Venezuela</option>
-            <option>Colombia</option>
-            <option>Chile</option>
-            <option>México</option>
-        </select><br>
+            <label>País de destino:</label>
+            <select name="destino">
+                <option>Venezuela</option>
+                <option>Colombia</option>
+                <option>Chile</option>
+                <option>México</option>
+            </select>
 
-        <label>Monto enviado:</label><br>
-        <input type="number" name="monto" step="0.01" required><br>
+            <label>Monto enviado:</label>
+            <input type="number" name="monto" step="0.01" required>
 
-        <label>Tasa aplicada:</label><br>
-        <input type="number" name="tasa" step="0.0001" required><br>
+            <label>Tasa aplicada:</label>
+            <input type="number" name="tasa" step="0.0001" required>
 
-        <label>Observaciones:</label><br>
-        <input type="text" name="nota"><br>
+            <label>Observaciones:</label>
+            <input type="text" name="nota">
 
-        <button type="submit">Registrar Remesa</button>
-    </form>
+            <button type="submit">Registrar Remesa</button>
+        </form>
 
-    {% if remesas %}
-    <h2>📋 Remesas Registradas</h2>
-    <table>
-        <tr>
-            <th>Cliente</th><th>Origen</th><th>Destino</th><th>Monto</th><th>Tasa</th><th>Recibido</th><th>Nota</th>
-        </tr>
-        {% for r in remesas %}
-        <tr>
-            <td>{{ r.cliente }}</td><td>{{ r.origen }}</td><td>{{ r.destino }}</td>
-            <td>${{ r.monto }}</td><td>{{ r.tasa }}</td><td>${{ r.recibido }}</td><td>{{ r.nota }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
+        {% if remesas %}
+        <h2>📋 Remesas Registradas</h2>
+        <table>
+            <tr>
+                <th>Cliente</th><th>Origen</th><th>Destino</th><th>Monto</th><th>Tasa</th><th>Recibido</th><th>Nota</th>
+            </tr>
+            {% for r in remesas %}
+            <tr>
+                <td>{{ r.cliente }}</td><td>{{ r.origen }}</td><td>{{ r.destino }}</td>
+                <td>${{ r.monto }}</td><td>{{ r.tasa }}</td><td>${{ r.recibido }}</td><td>{{ r.nota }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
 </body>
 </html>
