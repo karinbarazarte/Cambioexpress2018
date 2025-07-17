@@ -1,4 +1,3 @@
-
 # Cambio Express 2018
 
-Sistema administrativo para remesas y encomiendas. Desarrollado en Flask.
+Módulo de registro y control de remesas agregado.
