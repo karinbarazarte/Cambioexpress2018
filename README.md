@@ -1,3 +1,3 @@
 # Cambio Express 2018
 
-Sistema administrativo con diseño profesional.
+Dashboard con accesos rápidos y submenú de bancos.

@@ -43,46 +43,45 @@
         h1 {
             color: #0066cc;
         }
-        form {
-            background: #fff;
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 14px;
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin-bottom: 30px;
-        }
-        input, select, button {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        button {
-            background: #0066cc;
-            color: white;
-            border: none;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
             cursor: pointer;
         }
-        button:hover {
-            background: #005bb5;
+        .card:hover {
+            transform: translateY(-5px);
         }
-        table {
-            background: white;
-            width: 100%;
-            border-collapse: collapse;
+        .card h3 {
+            margin: 0;
+            color: #0066cc;
+        }
+        .submenu {
             margin-top: 20px;
-            border-radius: 10px;
-            overflow: hidden;
         }
-        th, td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
+        .submenu h2 {
+            color: #00aa88;
+            margin-bottom: 10px;
         }
-        th {
-            background: #e0f0ff;
+        .submenu ul {
+            list-style: none;
+            padding: 0;
+        }
+        .submenu ul li {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -93,58 +92,32 @@
         <a href="#">💸 Remesas</a>
         <a href="#">📦 Encomiendas</a>
         <a href="#">🤝 Colaboradores</a>
+        <a href="#">🏦 Bancos</a>
         <a href="#">📊 Reportes</a>
         <a href="#">⚙️ Configuración</a>
     </div>
     <div class="content">
         <h1>Bienvenida, Karin 👋</h1>
-        <h2>Registro de Remesas</h2>
-        <form method="POST">
-            <label>Nombre del cliente:</label>
-            <input type="text" name="cliente" required>
-
-            <label>País de origen:</label>
-            <select name="origen">
-                <option>Perú</option>
-                <option>Chile</option>
-                <option>Colombia</option>
-                <option>México</option>
-            </select>
-
-            <label>País de destino:</label>
-            <select name="destino">
-                <option>Venezuela</option>
-                <option>Colombia</option>
-                <option>Chile</option>
-                <option>México</option>
-            </select>
-
-            <label>Monto enviado:</label>
-            <input type="number" name="monto" step="0.01" required>
-
-            <label>Tasa aplicada:</label>
-            <input type="number" name="tasa" step="0.0001" required>
-
-            <label>Observaciones:</label>
-            <input type="text" name="nota">
-
-            <button type="submit">Registrar Remesa</button>
-        </form>
-
-        {% if remesas %}
-        <h2>📋 Remesas Registradas</h2>
-        <table>
-            <tr>
-                <th>Cliente</th><th>Origen</th><th>Destino</th><th>Monto</th><th>Tasa</th><th>Recibido</th><th>Nota</th>
-            </tr>
-            {% for r in remesas %}
-            <tr>
-                <td>{{ r.cliente }}</td><td>{{ r.origen }}</td><td>{{ r.destino }}</td>
-                <td>${{ r.monto }}</td><td>{{ r.tasa }}</td><td>${{ r.recibido }}</td><td>{{ r.nota }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
+        <p>Selecciona una opción para comenzar:</p>
+        <div class="quick-access">
+            <div class="card" onclick="window.location.href='/remesas'">
+                <h3>💸 Registro de Remesas</h3>
+            </div>
+            <div class="card" onclick="window.location.href='/bancos'">
+                <h3>🏦 Bancos</h3>
+            </div>
+            <div class="card" onclick="window.location.href='/clientes'">
+                <h3>👤 Clientes</h3>
+            </div>
+        </div>
+        <div class="submenu">
+            <h2>Submenú de Bancos</h2>
+            <ul>
+                <li>🏦 Bancos en Venezuela</li>
+                <li>🏦 Bancos en Perú</li>
+                <li>🏦 Bancos en Chile</li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>

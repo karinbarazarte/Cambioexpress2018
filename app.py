@@ -1,30 +1,12 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import os
 
 app = Flask(__name__)
-remesas = []
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def home():
-    if request.method == 'POST':
-        cliente = request.form['cliente']
-        origen = request.form['origen']
-        destino = request.form['destino']
-        monto = float(request.form['monto'])
-        tasa = float(request.form['tasa'])
-        recibido = round(monto * tasa, 2)
-        nota = request.form.get('nota', '')
-        remesas.append({
-            'cliente': cliente,
-            'origen': origen,
-            'destino': destino,
-            'monto': monto,
-            'tasa': tasa,
-            'recibido': recibido,
-            'nota': nota
-        })
-    return render_template('dashboard.html', remesas=remesas)
+    return render_template('dashboard.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
