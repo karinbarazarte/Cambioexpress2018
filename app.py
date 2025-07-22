@@ -30,6 +30,6 @@ def remesas():
     colaboradores = ["María", "Pedro", "Luisa"]
     return render_template('remesas.html', paises=paises, bancos=bancos, colaboradores=colaboradores)
 
-if __name_ == '_main_':
+if __name__ == '_main_':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
