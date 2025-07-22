@@ -1,62 +1,108 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Registro de Remesas</title>
+    <title>Registro de Remesas</title>
+    <script>
+        function calcularMonto() {
+            const monto = parseFloat(document.getElementById("monto").value) || 0;
+            const tasa = parseFloat(document.getElementById("tasa").value) || 0;
+            const origen = document.getElementById("origen").value;
+            const destino = document.getElementById("destino").value;
+            let montoRecibir = "";
+
+            const multiplicar = [
+                ["Perú", "Venezuela"],
+                ["Chile", "Venezuela"],
+                ["Perú", "Colombia"],
+                ["Perú", "Chile"],
+                ["Chile", "Colombia"]
+            ];
+            const dividir = [
+                ["Venezuela", "Perú"],
+                ["Venezuela", "Chile"],
+                ["Chile", "Perú"],
+                ["Colombia", "Chile"],
+                ["Colombia", "Perú"],
+                ["Colombia", "Venezuela"]
+            ];
+
+            if (multiplicar.some(p => p[0] === origen && p[1] === destino)) {
+                montoRecibir = (monto * tasa).toFixed(2);
+            } else if (dividir.some(p => p[0] === origen && p[1] === destino)) {
+                montoRecibir = (monto / tasa).toFixed(2);
+            } else {
+                montoRecibir = "";
+                document.getElementById("aviso").innerText = "⚠️ Esta combinación no tiene cálculo automático. Ingrese el monto manualmente.";
+                document.getElementById("monto_recibir").removeAttribute("readonly");
+                return;
+            }
+
+            document.getElementById("monto_recibir").value = montoRecibir;
+            document.getElementById("monto_recibir").setAttribute("readonly", true);
+            document.getElementById("aviso").innerText = "";
+        }
+
+        function toggleColaborador(checkbox) {
+            const select = document.getElementById("colaborador_select");
+            select.style.display = checkbox.checked ? "block" : "none";
+        }
+    </script>
 </head>
-<body>
-  <h2>Formulario de Registro de Remesas</h2>
-  <form>
-    <label>Nro de Operación:</label><br>
-    <input type="text" name="nro_operacion"><br><br>
+<body style="font-family: sans-serif; background: #f0faff; padding: 30px;">
+    <h2>💸 Registro de Remesas</h2>
+    <form>
+        <label>Nro de Operación:</label><br>
+        <input type="text" name="nro_operacion"><br><br>
 
-    <label>Fecha:</label><br>
-    <input type="date" name="fecha"><br><br>
+        <label>Fecha:</label><br>
+        <input type="date" name="fecha"><br><br>
 
-    <label>País de Origen:</label><br>
-    <select name="pais_origen">
-      <option>Perú</option>
-      <option>Chile</option>
-      <option>Colombia</option>
-      <option>Venezuela</option>
-      <option>México</option>
-    </select><br><br>
+        <label>País de Origen:</label><br>
+        <select id="origen" name="pais_origen" onchange="calcularMonto()">
+            {% for pais in paises %}
+            <option>{{ pais }}</option>
+            {% endfor %}
+        </select><br><br>
 
-    <label>Banco:</label><br>
-    <input type="text" name="banco"><br><br>
+        <label>Banco donde realizaron el depósito:</label><br>
+        <select name="banco">
+            {% for banco in bancos %}
+            <option>{{ banco }}</option>
+            {% endfor %}
+        </select><br><br>
 
-    <label>Tipo de Transacción:</label><br>
-    <input type="text" name="tipo_transaccion"><br><br>
+        <label>Tipo de Transacción:</label><br>
+        <input type="text" name="tipo_transaccion"><br><br>
 
-    <label>País Destino:</label><br>
-    <select name="pais_destino">
-      <option>Perú</option>
-      <option>Chile</option>
-      <option>Colombia</option>
-      <option>Venezuela</option>
-      <option>México</option>
-    </select><br><br>
+        <label>País de Destino:</label><br>
+        <select id="destino" name="pais_destino" onchange="calcularMonto()">
+            {% for pais in paises %}
+            <option>{{ pais }}</option>
+            {% endfor %}
+        </select><br><br>
 
-    <label>Monto en moneda local:</label><br>
-    <input type="number" name="monto"><br><br>
+        <label>Monto en moneda local:</label><br>
+        <input type="number" id="monto" name="monto" oninput="calcularMonto()"><br><br>
 
-    <label>Tasa:</label><br>
-    <input type="number" name="tasa" step="0.01"><br><br>
+        <label>Tasa:</label><br>
+        <input type="number" id="tasa" name="tasa" step="0.01" oninput="calcularMonto()"><br><br>
 
-    <label>Monto a recibir:</label><br>
-    <input type="number" name="monto_recibir"><br><br>
+        <label>Monto a recibir:</label><br>
+        <input type="number" id="monto_recibir" name="monto_recibir" readonly><br>
+        <small id="aviso" style="color: red;"></small><br><br>
 
-    <label>Cliente:</label><br>
-    <input type="text" name="cliente"><br><br>
+        <label>Cliente:</label><br>
+        <input type="text" name="cliente"><br><br>
 
-    <input type="checkbox" id="colaborador" onchange="document.getElementById('select_colaborador').style.display = this.checked ? 'block' : 'none'">
-    <label for="colaborador">¿Fue realizado por un colaborador?</label><br><br>
+        <label><input type="checkbox" onchange="toggleColaborador(this)"> ¿Fue realizado por un colaborador?</label><br>
+        <select id="colaborador_select" name="colaborador" style="display:none;">
+            {% for c in colaboradores %}
+            <option>{{ c }}</option>
+            {% endfor %}
+        </select><br><br>
 
-    <select id="select_colaborador" style="display:none">
-      <option>Colaborador 1</option>
-      <option>Colaborador 2</option>
-    </select><br><br>
-
-    <input type="submit" value="Guardar">
-  </form>
+        <input type="submit" value="Guardar">
+    </form>
 </body>
 </html>
