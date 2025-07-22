@@ -1,1 +1,62 @@
-...
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registro de Remesas</title>
+</head>
+<body>
+  <h2>Formulario de Registro de Remesas</h2>
+  <form>
+    <label>Nro de Operación:</label><br>
+    <input type="text" name="nro_operacion"><br><br>
+
+    <label>Fecha:</label><br>
+    <input type="date" name="fecha"><br><br>
+
+    <label>País de Origen:</label><br>
+    <select name="pais_origen">
+      <option>Perú</option>
+      <option>Chile</option>
+      <option>Colombia</option>
+      <option>Venezuela</option>
+      <option>México</option>
+    </select><br><br>
+
+    <label>Banco:</label><br>
+    <input type="text" name="banco"><br><br>
+
+    <label>Tipo de Transacción:</label><br>
+    <input type="text" name="tipo_transaccion"><br><br>
+
+    <label>País Destino:</label><br>
+    <select name="pais_destino">
+      <option>Perú</option>
+      <option>Chile</option>
+      <option>Colombia</option>
+      <option>Venezuela</option>
+      <option>México</option>
+    </select><br><br>
+
+    <label>Monto en moneda local:</label><br>
+    <input type="number" name="monto"><br><br>
+
+    <label>Tasa:</label><br>
+    <input type="number" name="tasa" step="0.01"><br><br>
+
+    <label>Monto a recibir:</label><br>
+    <input type="number" name="monto_recibir"><br><br>
+
+    <label>Cliente:</label><br>
+    <input type="text" name="cliente"><br><br>
+
+    <input type="checkbox" id="colaborador" onchange="document.getElementById('select_colaborador').style.display = this.checked ? 'block' : 'none'">
+    <label for="colaborador">¿Fue realizado por un colaborador?</label><br><br>
+
+    <select id="select_colaborador" style="display:none">
+      <option>Colaborador 1</option>
+      <option>Colaborador 2</option>
+    </select><br><br>
+
+    <input type="submit" value="Guardar">
+  </form>
+</body>
+</html>
