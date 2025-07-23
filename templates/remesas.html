@@ -1,7 +1,7 @@
 {% extends "dashboard.html" %}
 {% block content %}
 <h1 style="margin-bottom:20px;">Registrar Remesa</h1>
-<form>
+<form style="display:grid; grid-template-columns: 1fr 1fr; gap:15px 20px; background:white; padding:25px; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05); max-width:850px;">
     <div>
         <label>Nro de operación</label>
         <input type="text" name="operacion">
@@ -26,7 +26,9 @@
     </div>
     <div>
         <label>Banco</label>
-        <select>{% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}</select>
+        <select>
+            {% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}
+        </select>
     </div>
     <div>
         <label>Tasa</label>
@@ -57,16 +59,17 @@
     </div>
     <div id="colaborador_section" class="hidden">
         <label>Seleccionar colaborador</label>
-        <select>{% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}</select>
+        <select>
+            {% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}
+        </select>
     </div>
     <div>
         <label>Cliente</label>
         <input type="text">
     </div>
-    <p id="warning" class="warning">No hay regla definida, edite manualmente el monto a recibir.</p>
-    <button type="submit" class="submit-btn">Registrar</button>
+    <p id="warning" class="warning" style="grid-column:span 2; color:red; display:none;">No hay regla definida, edite manualmente el monto a recibir.</p>
+    <button type="submit" class="submit-btn" style="grid-column:span 2;">Registrar</button>
 </form>
-
 <script>
 function buscarTasa(){
     const origen=document.getElementById('pais_origen').value;
