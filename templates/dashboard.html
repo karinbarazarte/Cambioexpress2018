@@ -1,66 +1,28 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Cambio Express 2018 - Dashboard</title>
+    <meta charset="UTF-8">
+    <title>Cambio Express 2018</title>
     <style>
-        body { font-family: Arial; background: #f4f9ff; padding: 20px; color: #333; }
-        h1, h2 { color: #0066cc; }
-        form { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input, select, button { padding: 10px; margin: 5px 0; width: 100%; max-width: 400px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #e0f0ff; }
+        body { margin: 0; font-family: Arial, sans-serif; background: #f0faff; display: flex; min-height: 100vh; }
+        .sidebar { width: 220px; background: linear-gradient(160deg, #0066cc, #00cc99); padding: 20px; color: white; height: 100vh; position: fixed; }
+        .sidebar h2 { margin-top: 0; }
+        .sidebar a { color: white; text-decoration: none; display: block; margin: 10px 0; }
+        .content { margin-left: 240px; padding: 30px; flex: 1; }
+        .card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>Bienvenida, Karin 👋</h1>
-    <h2>🔹 Registro de Remesas</h2>
-    <form method="POST">
-        <label>Nombre del cliente:</label><br>
-        <input type="text" name="cliente" required><br>
-
-        <label>País de origen:</label><br>
-        <select name="origen">
-            <option>Perú</option>
-            <option>Chile</option>
-            <option>Colombia</option>
-            <option>México</option>
-        </select><br>
-
-        <label>País de destino:</label><br>
-        <select name="destino">
-            <option>Venezuela</option>
-            <option>Colombia</option>
-            <option>Chile</option>
-            <option>México</option>
-        </select><br>
-
-        <label>Monto enviado:</label><br>
-        <input type="number" name="monto" step="0.01" required><br>
-
-        <label>Tasa aplicada:</label><br>
-        <input type="number" name="tasa" step="0.0001" required><br>
-
-        <label>Observaciones:</label><br>
-        <input type="text" name="nota"><br>
-
-        <button type="submit">Registrar Remesa</button>
-    </form>
-
-    {% if remesas %}
-    <h2>📋 Remesas Registradas</h2>
-    <table>
-        <tr>
-            <th>Cliente</th><th>Origen</th><th>Destino</th><th>Monto</th><th>Tasa</th><th>Recibido</th><th>Nota</th>
-        </tr>
-        {% for r in remesas %}
-        <tr>
-            <td>{{ r.cliente }}</td><td>{{ r.origen }}</td><td>{{ r.destino }}</td>
-            <td>${{ r.monto }}</td><td>{{ r.tasa }}</td><td>${{ r.recibido }}</td><td>{{ r.nota }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
+    <div class="sidebar">
+        <h2>🌐 Cambio Express</h2>
+        <a href="/">🏠 Dashboard</a>
+        <a href="/remesas">💸 Registro de Remesas</a>
+        <a href="#">🏦 Bancos</a>
+        <a href="#">👥 Clientes</a>
+        <a href="#">📈 Tasas</a>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

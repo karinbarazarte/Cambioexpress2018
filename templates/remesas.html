@@ -1,1 +1,58 @@
-...
+{% extends "dashboard.html" %}
+{% block content %}
+<h2>Registro de Remesas</h2>
+<form>
+    <label>Nro de operación:</label><br>
+    <input type="text" name="operacion"><br><br>
+
+    <label>Fecha:</label><br>
+    <input type="date" name="fecha"><br><br>
+
+    <label>País de Origen:</label><br>
+    <select id="pais_origen" onchange="calcularMonto()">
+        <option value="">Seleccionar</option>
+        {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+    </select><br><br>
+
+    <label>Banco:</label><br>
+    <select>
+        {% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}
+    </select><br><br>
+
+    <label>Tipo de transacción:</label><br>
+    <input type="text"><br><br>
+
+    <label>País Destino:</label><br>
+    <select id="pais_destino" onchange="calcularMonto()">
+        <option value="">Seleccionar</option>
+        {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+    </select><br><br>
+
+    <label>Monto:</label><br>
+    <input type="number" id="monto" oninput="calcularMonto()"><br><br>
+
+    <label>Tasa:</label><br>
+    <input type="number" id="tasa" step="0.01" oninput="calcularMonto()"><br><br>
+
+    <label>Monto a recibir:</label><br>
+    <input type="number" id="monto_recibir" readonly><br><br>
+
+    <script>
+    function calcularMonto() {
+        const origen = document.getElementById("pais_origen").value;
+        const destino = document.getElementById("pais_destino").value;
+        const monto = parseFloat(document.getElementById("monto").value);
+        const tasa = parseFloat(document.getElementById("tasa").value);
+        if (!isNaN(monto) && !isNaN(tasa)) {
+            let res = "";
+            const mult = [["Perú","Venezuela"],["Chile","Venezuela"],["Perú","Colombia"],["Perú","Chile"],["Chile","Colombia"]];
+            const div = [["Venezuela","Perú"],["Venezuela","Chile"],["Chile","Perú"],["Colombia","Chile"],["Colombia","Perú"],["Colombia","Venezuela"]];
+            if(mult.some(p=>p[0]===origen && p[1]===destino)) res = monto * tasa;
+            if(div.some(p=>p[0]===origen && p[1]===destino)) res = monto / tasa;
+            document.getElementById("monto_recibir").value = res ? res.toFixed(2) : "";
+        }
+    }
+    </script>
+    <button type="submit">Guardar</button>
+</form>
+{% endblock %}
