@@ -1,3 +1,3 @@
 # Cambio Express 2018
 
-Incluye formulario de registro de remesas.
+Módulo de registro y control de remesas agregado.
