@@ -121,3 +121,11 @@ tr:nth-child(even) {
     border-radius: 6px;
     cursor: pointer;
 }
+input, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-top: 5px;
+}
