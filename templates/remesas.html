@@ -1,34 +1,72 @@
 {% extends "dashboard.html" %}
 {% block content %}
-<h1>Registrar Remesa</h1>
+<h1 style="margin-bottom:20px;">Registrar Remesa</h1>
 <form>
-    <div><label>Nro de operación</label><input type="text" name="operacion"></div>
-    <div><label>Fecha</label><input type="date" name="fecha"></div>
-    <div><label>País de origen</label>
+    <div>
+        <label>Nro de operación</label>
+        <input type="text" name="operacion">
+    </div>
+    <div>
+        <label>Fecha</label>
+        <input type="date" name="fecha">
+    </div>
+    <div>
+        <label>País de origen</label>
         <select id="pais_origen" onchange="buscarTasa()">
             <option value="">Seleccione</option>
             {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
         </select>
     </div>
-    <div><label>País destino</label>
+    <div>
+        <label>País destino</label>
         <select id="pais_destino" onchange="buscarTasa()">
             <option value="">Seleccione</option>
             {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
         </select>
     </div>
-    <div><label>Banco</label>
+    <div>
+        <label>Banco</label>
         <select>{% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}</select>
     </div>
-    <div><label>Tasa</label><input type="number" id="tasa" step="0.01"></div>
-    <div><label>Monto recibido</label><input type="number" id="monto" oninput="calcularMonto()"></div>
-    <div><label>Monto a recibir</label><input type="number" id="monto_recibir" readonly></div>
-    <div><label>Tipo de transacción</label><select><option>Seleccione</option><option>Transferencia</option><option>Yape</option></select></div>
-    <div><label>¿Viene de colaborador?</label><select id="colaborador_toggle" onchange="toggleColaborador()"><option>No</option><option>Sí</option></select></div>
-    <div id="colaborador_section" class="hidden"><label>Seleccionar colaborador</label><select>{% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}</select></div>
-    <div><label>Cliente</label><input type="text"></div>
+    <div>
+        <label>Tasa</label>
+        <input type="number" id="tasa" step="0.01">
+    </div>
+    <div>
+        <label>Monto recibido</label>
+        <input type="number" id="monto" oninput="calcularMonto()">
+    </div>
+    <div>
+        <label>Monto a recibir</label>
+        <input type="number" id="monto_recibir" readonly>
+    </div>
+    <div>
+        <label>Tipo de transacción</label>
+        <select>
+            <option>Seleccione</option>
+            <option>Transferencia</option>
+            <option>Yape</option>
+        </select>
+    </div>
+    <div>
+        <label>¿Viene de colaborador?</label>
+        <select id="colaborador_toggle" onchange="toggleColaborador()">
+            <option>No</option>
+            <option>Sí</option>
+        </select>
+    </div>
+    <div id="colaborador_section" class="hidden">
+        <label>Seleccionar colaborador</label>
+        <select>{% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}</select>
+    </div>
+    <div>
+        <label>Cliente</label>
+        <input type="text">
+    </div>
     <p id="warning" class="warning">No hay regla definida, edite manualmente el monto a recibir.</p>
     <button type="submit" class="submit-btn">Registrar</button>
 </form>
+
 <script>
 function buscarTasa(){
     const origen=document.getElementById('pais_origen').value;
