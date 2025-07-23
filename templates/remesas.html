@@ -1,84 +1,84 @@
 {% extends "dashboard.html" %}
 {% block content %}
-<h2 style="margin-bottom:20px;">Registro de Remesas</h2>
+<h1 style="margin-bottom:20px;">Registrar Remesa</h1>
 <form>
-    <label>Nro de operación:</label>
-    <input type="text" name="operacion">
-
-    <label>Fecha:</label>
-    <input type="date" name="fecha">
-
-    <label>País de Origen:</label>
-    <select id="pais_origen" onchange="calcularMonto()">
-        <option value="">Seleccionar</option>
-        {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
-    </select>
-
-    <label>Banco:</label>
-    <select>
-        {% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}
-    </select>
-
-    <label>Tipo de transacción:</label>
-    <input type="text">
-
-    <label>País Destino:</label>
-    <select id="pais_destino" onchange="calcularMonto()">
-        <option value="">Seleccionar</option>
-        {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
-    </select>
-
-    <label>Monto:</label>
-    <input type="number" id="monto" oninput="calcularMonto()">
-
-    <label>Tasa:</label>
-    <input type="number" id="tasa" step="0.01" oninput="calcularMonto()">
-
-    <label>Monto a recibir:</label>
-    <input type="number" id="monto_recibir" readonly>
-
-    <div style="margin:15px 0;">
-        <label style="margin-right:10px;">¿Es de un colaborador?</label>
-        <label class="switch">
-            <input type="checkbox" id="toggleColaborador" onchange="toggleColaborador()">
-            <span class="slider"></span>
-        </label>
+    <div>
+        <label>Nro de operación</label>
+        <input type="text" name="operacion">
     </div>
-
+    <div>
+        <label>Fecha</label>
+        <input type="date" name="fecha">
+    </div>
+    <div>
+        <label>País de origen</label>
+        <select id="pais_origen" onchange="calcularMonto()">
+            <option value="">Seleccione</option>
+            {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+        </select>
+    </div>
+    <div>
+        <label>Tasa</label>
+        <input type="number" id="tasa" step="0.01" oninput="calcularMonto()">
+    </div>
+    <div>
+        <label>Banco</label>
+        <select>
+            {% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}
+        </select>
+    </div>
+    <div>
+        <label>Monto a recibir</label>
+        <input type="number" id="monto_recibir" readonly>
+    </div>
+    <div>
+        <label>Tipo de transacción</label>
+        <select>
+            <option>Seleccione</option>
+            <option>Transferencia</option>
+            <option>Yape</option>
+        </select>
+    </div>
+    <div>
+        <label>Monto en moneda local</label>
+        <input type="number" id="monto" oninput="calcularMonto()">
+    </div>
+    <div>
+        <label>¿Viene de colaborador?</label>
+        <select id="colaborador_toggle" onchange="toggleColaborador()">
+            <option value="No">No</option>
+            <option value="Si">Sí</option>
+        </select>
+    </div>
     <div id="colaborador_section" class="hidden">
-        <label>Seleccionar colaborador:</label>
+        <label>Seleccionar colaborador</label>
         <select>
             {% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}
         </select>
     </div>
-
-    <button type="submit">Guardar</button>
+    <div>
+        <label>Cliente</label>
+        <input type="text">
+    </div>
+    <button type="submit" class="submit-btn">Registrar</button>
 </form>
 
 <script>
-function calcularMonto() {
-    const origen = document.getElementById("pais_origen").value;
-    const destino = document.getElementById("pais_destino").value;
-    const monto = parseFloat(document.getElementById("monto").value);
-    const tasa = parseFloat(document.getElementById("tasa").value);
-    let res = "";
-    const mult = [["Perú","Venezuela"],["Chile","Venezuela"],["Perú","Colombia"],["Perú","Chile"],["Chile","Colombia"]];
-    const div = [["Venezuela","Perú"],["Venezuela","Chile"],["Chile","Perú"],["Colombia","Chile"],["Colombia","Perú"],["Colombia","Venezuela"]];
+function calcularMonto(){
+    const origen=document.getElementById("pais_origen").value;
+    const destino="Venezuela"; // se puede ampliar luego
+    const monto=parseFloat(document.getElementById("monto").value);
+    const tasa=parseFloat(document.getElementById("tasa").value);
+    let res="";
     if(!isNaN(monto)&&!isNaN(tasa)){
-        if(mult.some(p=>p[0]===origen&&p[1]===destino)) res=monto*tasa;
-        if(div.some(p=>p[0]===origen&&p[1]===destino)) res=monto/tasa;
-        document.getElementById("monto_recibir").value=res?res.toFixed(2):"";
+        res=monto*tasa;
+        document.getElementById("monto_recibir").value=res.toFixed(2);
     }
 }
-function toggleColaborador() {
-    const section = document.getElementById("colaborador_section");
-    if(document.getElementById("toggleColaborador").checked){
-        section.classList.remove('hidden');
-        section.classList.add('visible');
-    } else {
-        section.classList.remove('visible');
-        section.classList.add('hidden');
-    }
+function toggleColaborador(){
+    const val=document.getElementById("colaborador_toggle").value;
+    const section=document.getElementById("colaborador_section");
+    section.className=(val==="Si")?"":"hidden";
 }
 </script>
 {% endblock %}
