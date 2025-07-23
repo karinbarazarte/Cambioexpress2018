@@ -65,14 +65,10 @@
 
 <script>
 function calcularMonto(){
-    const origen=document.getElementById("pais_origen").value;
-    const destino="Venezuela"; // se puede ampliar luego
     const monto=parseFloat(document.getElementById("monto").value);
     const tasa=parseFloat(document.getElementById("tasa").value);
-    let res="";
     if(!isNaN(monto)&&!isNaN(tasa)){
-        res=monto*tasa;
-        document.getElementById("monto_recibir").value=res.toFixed(2);
+        document.getElementById("monto_recibir").value=(monto*tasa).toFixed(2);
     }
 }
 function toggleColaborador(){
