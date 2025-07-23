@@ -1,0 +1,17 @@
+
+{% extends "dashboard.html" %}
+{% block content %}
+    <h1>Bienvenida, Karin 👋</h1>
+    <div class="card" onclick="location.href='/remesas'">
+        <h3>💸 Registrar Remesa</h3>
+        <p>Accede al formulario para ingresar una nueva operación de remesas.</p>
+    </div>
+    <div class="card">
+        <h3>🏦 Ver Bancos</h3>
+        <p>Gestiona los bancos disponibles por país.</p>
+    </div>
+    <div class="card">
+        <h3>👥 Ver Clientes</h3>
+        <p>Consulta y edita los datos de tus clientes frecuentes.</p>
+    </div>
+{% endblock %}

@@ -1,11 +1,9 @@
 
 from flask import Flask, render_template, request
 import os
-import datetime
 
 app = Flask(__name__)
 
-# Simulador de tasas registradas
 tasas = {
     ("Perú", "Venezuela"): 3.5,
     ("Venezuela", "Perú"): 4.1,
@@ -30,7 +28,6 @@ def remesas():
     bancos = ["BCP", "Interbank", "Banesco", "Banco de Venezuela", "Scotiabank"]
     colaboradores = ["María", "Pedro", "Luisa"]
     return render_template('remesas.html', paises=paises, bancos=bancos, colaboradores=colaboradores)
-
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

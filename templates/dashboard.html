@@ -1,27 +1,29 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Dashboard - Cambio Express</title>
+    <meta charset="UTF-8">
+    <title>Cambio Express 2018</title>
     <style>
-        body { font-family: sans-serif; margin: 0; display: flex; height: 100vh; background: #f0faff; }
-        .sidebar { width: 220px; background: linear-gradient(160deg, #0066cc, #00cc99); color: white; padding: 20px; }
-        .content { padding: 30px; flex: 1; }
+        body { margin: 0; font-family: Arial, sans-serif; background: #f0faff; display: flex; min-height: 100vh; }
+        .sidebar { width: 220px; background: linear-gradient(160deg, #0066cc, #00cc99); padding: 20px; color: white; height: 100vh; position: fixed; }
+        .sidebar h2 { margin-top: 0; }
+        .sidebar a { color: white; text-decoration: none; display: block; margin: 10px 0; }
+        .content { margin-left: 240px; padding: 30px; flex: 1; }
         .card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <h2>Cambio Express</h2>
-        <p><a href="/" style="color:white;">Dashboard</a></p>
-        <p><a href="/remesas" style="color:white;">Registro de Remesas</a></p>
-        <p><a href="#" style="color:white;">Tasas</a></p>
+        <h2>🌐 Cambio Express</h2>
+        <a href="/">🏠 Dashboard</a>
+        <a href="/remesas">💸 Registro de Remesas</a>
+        <a href="#">🏦 Bancos</a>
+        <a href="#">👥 Clientes</a>
+        <a href="#">📈 Tasas</a>
     </div>
     <div class="content">
-        <h1>Bienvenida, Karin 👋</h1>
-        <div class="card" onclick="location.href='/remesas'">
-            <h3>💸 Ir a Registro de Remesas</h3>
-        </div>
+        {% block content %}{% endblock %}
     </div>
 </body>
 </html>
