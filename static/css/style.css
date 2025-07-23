@@ -52,44 +52,12 @@ body {
     padding: 30px;
     width: calc(100% - 260px);
 }
-.header-buttons {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-.header-buttons button {
-    flex: 1;
-    background: linear-gradient(90deg, #05386b, #00bfa5);
-    border: none;
-    color: white;
-    padding: 12px 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-}
-.header-buttons button:hover {
-    opacity: 0.9;
-}
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
 form {
     background: white;
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    max-width: 800px;
+    max-width: 850px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px 20px;
@@ -114,5 +82,11 @@ button.submit-btn {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+.warning {
+    grid-column: span 2;
+    color: #b30000;
+    font-size: 14px;
+    display: none;
 }
 .hidden { display: none; }

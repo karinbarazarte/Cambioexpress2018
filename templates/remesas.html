@@ -18,14 +18,25 @@
         </select>
     </div>
     <div>
-        <label>Tasa</label>
-        <input type="number" id="tasa" step="0.01" oninput="calcularMonto()">
+        <label>País destino</label>
+        <select id="pais_destino" onchange="calcularMonto()">
+            <option value="">Seleccione</option>
+            {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+        </select>
     </div>
     <div>
         <label>Banco</label>
         <select>
             {% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}
         </select>
+    </div>
+    <div>
+        <label>Tasa</label>
+        <input type="number" id="tasa" step="0.01" oninput="calcularMonto()">
+    </div>
+    <div>
+        <label>Monto recibido</label>
+        <input type="number" id="monto" oninput="calcularMonto()">
     </div>
     <div>
         <label>Monto a recibir</label>
@@ -38,10 +49,6 @@
             <option>Transferencia</option>
             <option>Yape</option>
         </select>
-    </div>
-    <div>
-        <label>Monto depositado</label>
-        <input type="number" id="monto" oninput="calcularMonto()">
     </div>
     <div>
         <label>¿Viene de colaborador?</label>
@@ -60,15 +67,33 @@
         <label>Cliente</label>
         <input type="text">
     </div>
+    <p id="warning" class="warning">No hay regla definida, edite manualmente el monto a recibir.</p>
     <button type="submit" class="submit-btn">Registrar</button>
 </form>
 
 <script>
 function calcularMonto(){
+    const origen=document.getElementById("pais_origen").value;
+    const destino=document.getElementById("pais_destino").value;
     const monto=parseFloat(document.getElementById("monto").value);
     const tasa=parseFloat(document.getElementById("tasa").value);
+    const mult=[["Perú","Venezuela"],["Chile","Venezuela"],["Perú","Colombia"],["Perú","Chile"],["Chile","Colombia"]];
+    const div=[["Venezuela","Perú"],["Venezuela","Chile"],["Chile","Perú"],["Colombia","Chile"],["Colombia","Perú"],["Colombia","Venezuela"]];
+    const resInput=document.getElementById("monto_recibir");
+    const warning=document.getElementById("warning");
     if(!isNaN(monto)&&!isNaN(tasa)){
-        document.getElementById("monto_recibir").value=(monto*tasa).toFixed(2);
+        if(mult.some(p=>p[0]===origen&&p[1]===destino)){
+            resInput.value=(monto*tasa).toFixed(2);
+            resInput.readOnly=true;
+            warning.style.display="none";
+        } else if(div.some(p=>p[0]===origen&&p[1]===destino)){
+            resInput.value=(monto/tasa).toFixed(2);
+            resInput.readOnly=true;
+            warning.style.display="none";
+        } else {
+            resInput.readOnly=false;
+            warning.style.display="block";
+        }
     }
 }
 function toggleColaborador(){
