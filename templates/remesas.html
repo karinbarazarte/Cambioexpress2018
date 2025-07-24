@@ -1,1 +1,41 @@
-<h2>Remesas</h2>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registrar Remesa</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="container">
+  <h2>Registrar Remesa</h2>
+  <form>
+    <div class="form-row">
+      <input type="text" placeholder="Nro de operación">
+      <input type="date" placeholder="Fecha">
+    </div>
+    <div class="form-row">
+      <select><option>País de origen</option></select>
+      <select><option>País destino</option></select>
+    </div>
+    <div class="form-row">
+      <select><option>Banco</option></select>
+      <input type="text" placeholder="Tasa">
+    </div>
+    <div class="form-row">
+      <input type="number" placeholder="Monto depositado">
+      <input type="number" placeholder="Monto a recibir">
+    </div>
+    <div class="form-row">
+      <select><option>Tipo de transacción</option></select>
+      <select><option>¿Viene de colaborador?</option></select>
+    </div>
+    <div class="form-row">
+      <select><option>Seleccionar colaborador</option></select>
+      <input type="text" placeholder="Cliente">
+    </div>
+    <button type="submit">Registrar</button>
+  </form>
+</div>
+</body>
+</html>
