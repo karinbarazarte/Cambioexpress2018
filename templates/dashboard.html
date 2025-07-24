@@ -3,17 +3,20 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Cambio Express</title>
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 <div class="sidebar">
-  <h2>Cambio Express</h2>
+  <div class="logo">
+    <img src="/static/img/logo.png" alt="Logo" style="width:150px;margin:20px auto;display:block;">
+  </div>
   <ul>
-    <li><a href="/">Dashboard</a></li>
+    <li><a href="/" class="active">Dashboard</a></li>
     <li><a href="/remesas">Registrar Remesa</a></li>
     <li>Bancos
-      <ul>
+      <ul class="submenu">
         <li><a href="/bancos/venezuela">Venezuela</a></li>
         <li><a href="/bancos/peru">Perú</a></li>
         <li><a href="/bancos/chile">Chile</a></li>
@@ -24,9 +27,9 @@
 </div>
 <div class="content">
   <h1>Dashboard</h1>
-  <div class="buttons">
-    <a href="/remesas" class="btn">Registrar Remesa</a>
-    <a href="/bancos/venezuela" class="btn">Bancos</a>
+  <div class="dashboard-buttons">
+    <a href="/remesas" class="btn-primary">Registrar Remesa</a>
+    <a href="/bancos/venezuela" class="btn-secondary">Bancos</a>
   </div>
 </div>
 </body>

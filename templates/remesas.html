@@ -3,39 +3,66 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registrar Remesa</title>
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-<div class="container">
-  <h2>Registrar Remesa</h2>
-  <form>
-    <div class="form-row">
-      <input type="text" placeholder="Nro de operación">
-      <input type="date" placeholder="Fecha">
+<div class="content">
+<h2>Registrar Remesa</h2>
+<form>
+  <div class="form-grid">
+    <div>
+      <label>Nro de operación</label>
+      <input type="text" placeholder="Número de operación">
     </div>
-    <div class="form-row">
-      <select><option>País de origen</option></select>
-      <select><option>País destino</option></select>
+    <div>
+      <label>Fecha</label>
+      <input type="date">
     </div>
-    <div class="form-row">
-      <select><option>Banco</option></select>
-      <input type="text" placeholder="Tasa">
+    <div>
+      <label>País de origen</label>
+      <select><option>Seleccione</option></select>
     </div>
-    <div class="form-row">
-      <input type="number" placeholder="Monto depositado">
-      <input type="number" placeholder="Monto a recibir">
+    <div>
+      <label>País destino</label>
+      <select><option>Seleccione</option></select>
     </div>
-    <div class="form-row">
-      <select><option>Tipo de transacción</option></select>
-      <select><option>¿Viene de colaborador?</option></select>
+    <div>
+      <label>Banco</label>
+      <select><option>Seleccione</option></select>
     </div>
-    <div class="form-row">
-      <select><option>Seleccionar colaborador</option></select>
-      <input type="text" placeholder="Cliente">
+    <div>
+      <label>Tasa</label>
+      <input type="text">
     </div>
-    <button type="submit">Registrar</button>
-  </form>
+    <div>
+      <label>Monto depositado</label>
+      <input type="number">
+    </div>
+    <div>
+      <label>Monto a recibir</label>
+      <input type="number" readonly>
+    </div>
+    <div>
+      <label>Tipo de transacción</label>
+      <select><option>Seleccione</option></select>
+    </div>
+    <div>
+      <label>¿Viene de colaborador?</label>
+      <select><option>No</option><option>Sí</option></select>
+    </div>
+    <div>
+      <label>Seleccionar colaborador</label>
+      <select><option>Seleccione</option></select>
+    </div>
+    <div>
+      <label>Cliente</label>
+      <input type="text">
+    </div>
+  </div>
+  <button class="btn-primary">Registrar</button>
+</form>
 </div>
 </body>
 </html>

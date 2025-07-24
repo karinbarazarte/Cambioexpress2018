@@ -1,13 +1,15 @@
 
-body { font-family: Arial; background: #f4f7fb; margin:0; padding:0; }
-.sidebar { width:250px; background:#002b5c; color:#fff; float:left; height:100vh; }
-.sidebar h2 { text-align:center; padding:20px; }
-.sidebar ul { list-style:none; padding:0; }
-.sidebar ul li { padding:10px; }
-.sidebar ul li a { color:#fff; text-decoration:none; display:block; }
-.content { margin-left:260px; padding:20px; }
-.btn { display:inline-block; padding:15px; margin:10px; background:linear-gradient(90deg,#007bff,#00d084); color:#fff; text-decoration:none; border-radius:8px; }
-.container { background:#fff; padding:20px; margin:20px auto; border-radius:8px; width:80%; }
-.form-row { display:flex; gap:10px; margin-bottom:10px; }
-input, select { flex:1; padding:10px; border:1px solid #ccc; border-radius:4px; }
-button { background:#007bff; color:#fff; padding:12px; border:none; border-radius:6px; width:100%; }
+body { font-family: 'Arial', sans-serif; margin:0; padding:0; background:#f7f9fc; color:#333; }
+.sidebar { position:fixed; width:250px; height:100%; background:#002b5c; color:#fff; padding-top:20px; }
+.sidebar ul { list-style:none; padding:0; margin:0; }
+.sidebar ul li { padding:10px 20px; }
+.sidebar ul li a { color:#fff; text-decoration:none; display:block; font-weight:bold; }
+.sidebar ul li a.active, .sidebar ul li a:hover { background:#004080; border-radius:4px; }
+.submenu { padding-left:15px; }
+.content { margin-left:270px; padding:20px; }
+.dashboard-buttons { margin-top:20px; }
+.btn-primary { background:linear-gradient(90deg,#007bff,#00d084); padding:15px 25px; color:#fff; text-decoration:none; border-radius:8px; font-weight:bold; }
+.btn-secondary { background:#00d084; padding:15px 25px; color:#fff; text-decoration:none; border-radius:8px; font-weight:bold; margin-left:10px; }
+.form-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:15px; background:#fff; padding:20px; border-radius:8px; }
+input, select { width:100%; padding:10px; border:1px solid #ccc; border-radius:5px; }
+button { margin-top:20px; width:100%; padding:15px; background:#007bff; color:#fff; font-weight:bold; border:none; border-radius:8px; }
