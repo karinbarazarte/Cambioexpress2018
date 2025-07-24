@@ -151,3 +151,35 @@ tr:nth-child(even) {
     border-radius: 8px;
     cursor: pointer;
 }
+
+/* Asegurando estilos para formulario remesa */
+
+.form-remesa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 850px;
+    margin: auto;
+}
+
+.form-remesa p.warning {
+    grid-column: span 2;
+    color: #b30000;
+    font-size: 14px;
+    display: none;
+}
+
+.form-remesa .submit-btn {
+    grid-column: span 2;
+    background: linear-gradient(90deg, #05386b, #00bfa5);
+    color: white;
+    padding: 14px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
