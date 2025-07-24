@@ -58,12 +58,23 @@
             </select>
         </div>
         <div>
-            <label>Tasa</label>
-            <input type="number" id="tasa" step="0.01">
+            <label>País destino</label>
+            <select id="pais_destino" onchange="buscarTasa()">
+                <option value="">Seleccione</option>
+                {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+            </select>
         </div>
         <div>
             <label>Banco</label>
             <select>{% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}</select>
+        </div>
+        <div>
+            <label>Tasa</label>
+            <input type="number" id="tasa" step="0.01">
+        </div>
+        <div>
+            <label>Monto depositado</label>
+            <input type="number" id="monto" oninput="calcularMonto()">
         </div>
         <div>
             <label>Monto a recibir</label>
@@ -89,10 +100,6 @@
             <select>{% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}</select>
         </div>
         <div>
-            <label>Monto en moneda local</label>
-            <input type="number" id="monto" oninput="calcularMonto()">
-        </div>
-        <div>
             <label>Cliente</label>
             <input type="text">
         </div>
@@ -103,7 +110,7 @@
 <script>
 function buscarTasa(){
     const origen=document.getElementById('pais_origen').value;
-    const destino=document.getElementById('pais_destino')?document.getElementById('pais_destino').value:"";
+    const destino=document.getElementById('pais_destino').value;
     if(origen && destino){
         fetch(`/obtener_tasa?origen=${origen}&destino=${destino}`).then(r=>r.json()).then(data=>{
             if(data.tasa!==null){document.getElementById('tasa').value=data.tasa;}
