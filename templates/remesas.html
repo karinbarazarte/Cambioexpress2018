@@ -1,5 +1,44 @@
 {% extends "dashboard.html" %}
 {% block content %}
+<style>
+.form-container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.form-remesa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.form-remesa label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+.form-remesa input, .form-remesa select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+.form-remesa button {
+    grid-column: span 2;
+    padding: 12px;
+    background: linear-gradient(90deg, #05386b, #00bfa5);
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.hidden { display: none; }
+</style>
+
 <div class="form-container">
     <h2>Registrar Remesa</h2>
     <form class="form-remesa">
@@ -57,7 +96,7 @@
             <label>Cliente</label>
             <input type="text">
         </div>
-        <button type="submit" class="btn-primary">Registrar</button>
+        <button type="submit">Registrar</button>
     </form>
 </div>
 
