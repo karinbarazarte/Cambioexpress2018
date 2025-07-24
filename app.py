@@ -1,1 +1,1 @@
-# Rutas para bancos añadidas
+# Flask app con rutas para dashboard, remesas y bancos
