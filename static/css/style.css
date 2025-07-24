@@ -1,34 +1,213 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
     margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f8f9fb;
+    display: flex;
 }
 .sidebar {
-    width: 220px;
-    background: linear-gradient(180deg, #05386b, #00bfa5);
+    width: 240px;
+    background: linear-gradient(180deg, #05386b, #379683);
     color: white;
     height: 100vh;
-    padding: 20px;
-    float: left;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
 }
-.sidebar h2 {
-    font-size: 20px;
-    margin-bottom: 20px;
+.sidebar img {
+    width: 140px;
+    margin-bottom: 40px;
 }
-.sidebar ul {
-    list-style: none;
-    padding: 0;
+.nav-links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 20px;
 }
-.sidebar ul li {
-    margin: 15px 0;
-}
-.sidebar ul li a {
+.nav-links a {
     color: white;
     text-decoration: none;
     font-size: 16px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+.nav-links a:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateX(5px);
+}
+.nav-links a.active {
+    background: rgba(255,255,255,0.3);
 }
 .content {
-    margin-left: 240px;
+    margin-left: 260px;
     padding: 30px;
+    width: calc(100% - 260px);
+}
+.big-buttons button {
+    background: linear-gradient(90deg, #043f77, #00cc99);
+    color: white;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.big-buttons button:hover {
+    opacity: 0.9;
+    transform: translateY(-3px);
+}
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+form select, form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 180px;
+}
+form button {
+    background: #00bfa5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+th {
+    background: #043f77;
+    color: white;
+}
+tr:nth-child(even) {
+    background: #f4f4f4;
+}
+.delete-btn {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-remesa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 850px;
+    margin: auto;
+}
+
+.form-remesa p.warning {
+    grid-column: span 2;
+    color: #b30000;
+    font-size: 14px;
+    display: none;
+}
+
+.form-remesa .submit-btn {
+    grid-column: span 2;
+    background: linear-gradient(90deg, #05386b, #00bfa5);
+    color: white;
+    padding: 14px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Asegurando estilos para formulario remesa */
+
+.form-remesa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 850px;
+    margin: auto;
+}
+
+.form-remesa p.warning {
+    grid-column: span 2;
+    color: #b30000;
+    font-size: 14px;
+    display: none;
+}
+
+.form-remesa .submit-btn {
+    grid-column: span 2;
+    background: linear-gradient(90deg, #05386b, #00bfa5);
+    color: white;
+    padding: 14px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.form-remesa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 850px;
+    margin: auto;
+}
+.form-remesa p.warning {
+    grid-column: span 2;
+    color: #b30000;
+    font-size: 14px;
+    display: none;
+}
+.form-remesa .submit-btn {
+    grid-column: span 2;
+    background: linear-gradient(90deg, #05386b, #00bfa5);
+    color: white;
+    padding: 14px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }

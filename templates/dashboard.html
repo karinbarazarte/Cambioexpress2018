@@ -2,42 +2,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambio Express 2018</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4">
-
-    <style>
-    .form-remesa {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 15px 20px !important;
-        background: white !important;
-        padding: 25px !important;
-        border-radius: 15px !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
-        max-width: 850px !important;
-        margin: auto !important;
-    }
-    .form-remesa .submit-btn {
-        grid-column: span 2 !important;
-        background: linear-gradient(90deg, #05386b, #00bfa5) !important;
-        color: white !important;
-        padding: 14px !important;
-        font-size: 16px !important;
-        border: none !important;
-        border-radius: 8px !important;
-        cursor: pointer !important;
-    }
-    </style>
+    <link rel="stylesheet" href="/static/css/style.css?v=6">
 </head>
 <body>
     <div class="sidebar">
-        <h2>Cambio Express</h2>
-        <ul>
-            <li><a href="/">Dashboard</a></li>
-            <li><a href="/remesas">Registrar Remesa</a></li>
-            <li><a href="/tasas">Tasas</a></li>
-        </ul>
+        <img src="https://via.placeholder.com/140x60?text=LOGO" alt="Logo">
+        <div class="nav-links">
+            <a href="/" class="{% if request.path == '/' %}active{% endif %}">🏠 Dashboard</a>
+            <a href="/remesas" class="{% if request.path == '/remesas' %}active{% endif %}">💸 Remesas</a>
+            <a href="/tasas" class="{% if request.path == '/tasas' %}active{% endif %}">📈 Tasas</a>
+            <a href="#">🏦 Bancos</a>
+            <a href="#">👥 Clientes</a>
+        </div>
     </div>
     <div class="content">
         {% block content %}{% endblock %}
