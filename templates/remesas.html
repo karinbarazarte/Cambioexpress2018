@@ -58,14 +58,14 @@
         </div>
         <div>
             <label>País de origen</label>
-            <select id="pais_origen" onchange="calcularMonto()">
+            <select id="pais_origen" onchange="buscarTasa()">
                 <option value="">Seleccione</option>
                 {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
             </select>
         </div>
         <div>
             <label>País destino</label>
-            <select id="pais_destino" onchange="calcularMonto()">
+            <select id="pais_destino" onchange="buscarTasa()">
                 <option value="">Seleccione</option>
                 {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
             </select>
@@ -76,7 +76,7 @@
         </div>
         <div>
             <label>Tasa</label>
-            <input type="number" id="tasa" step="0.01" oninput="calcularMonto()">
+            <input type="number" id="tasa" step="0.01" readonly>
         </div>
         <div>
             <label>Monto depositado</label>
@@ -115,6 +115,25 @@
 </div>
 
 <script>
+async function buscarTasa(){
+    const origen=document.getElementById('pais_origen').value;
+    const destino=document.getElementById('pais_destino').value;
+    if(origen && destino){
+        try {
+            const response = await fetch(`/obtener_tasa?origen=${origen}&destino=${destino}`);
+            const data = await response.json();
+            if(data.tasa!==null){
+                document.getElementById('tasa').value=data.tasa;
+            } else {
+                document.getElementById('tasa').value='';
+            }
+            calcularMonto();
+        } catch(e){
+            console.error("Error obteniendo la tasa", e);
+        }
+    }
+}
+
 function calcularMonto(){
     const origen=document.getElementById('pais_origen').value;
     const destino=document.getElementById('pais_destino').value;
