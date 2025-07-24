@@ -1,76 +1,70 @@
 {% extends "dashboard.html" %}
 {% block content %}
-<h1 style="margin-bottom:20px;">Registrar Remesa</h1>
-<form class="form-remesa">
-    <div>
-        <label>Nro de operación</label>
-        <input type="text" name="operacion">
-    </div>
-    <div>
-        <label>Fecha</label>
-        <input type="date" name="fecha">
-    </div>
-    <div>
-        <label>País de origen</label>
-        <select id="pais_origen" onchange="buscarTasa()">
-            <option value="">Seleccione</option>
-            {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
-        </select>
-    </div>
-    <div>
-        <label>País destino</label>
-        <select id="pais_destino" onchange="buscarTasa()">
-            <option value="">Seleccione</option>
-            {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
-        </select>
-    </div>
-    <div>
-        <label>Banco</label>
-        <select>{% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}</select>
-    </div>
-    <div>
-        <label>Tasa</label>
-        <input type="number" id="tasa" step="0.01">
-    </div>
-    <div>
-        <label>Monto recibido</label>
-        <input type="number" id="monto" oninput="calcularMonto()">
-    </div>
-    <div>
-        <label>Monto a recibir</label>
-        <input type="number" id="monto_recibir" readonly>
-    </div>
-    <div>
-        <label>Tipo de transacción</label>
-        <select>
-            <option>Seleccione</option>
-            <option>Transferencia</option>
-            <option>Yape</option>
-        </select>
-    </div>
-    <div>
-        <label>¿Viene de colaborador?</label>
-        <select id="colaborador_toggle" onchange="toggleColaborador()">
-            <option>No</option>
-            <option>Sí</option>
-        </select>
-    </div>
-    <div id="colaborador_section" class="hidden">
-        <label>Seleccionar colaborador</label>
-        <select>{% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}</select>
-    </div>
-    <div>
-        <label>Cliente</label>
-        <input type="text">
-    </div>
-    <p id="warning" class="warning">No hay regla definida, edite manualmente el monto a recibir.</p>
-    <button type="submit" class="submit-btn">Registrar</button>
-</form>
+<div class="form-container">
+    <h2>Registrar Remesa</h2>
+    <form class="form-remesa">
+        <div>
+            <label>Nro de operación</label>
+            <input type="text" name="operacion">
+        </div>
+        <div>
+            <label>Fecha</label>
+            <input type="date" name="fecha">
+        </div>
+        <div>
+            <label>País de origen</label>
+            <select id="pais_origen" onchange="buscarTasa()">
+                <option value="">Seleccione</option>
+                {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Tasa</label>
+            <input type="number" id="tasa" step="0.01">
+        </div>
+        <div>
+            <label>Banco</label>
+            <select>{% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}</select>
+        </div>
+        <div>
+            <label>Monto a recibir</label>
+            <input type="number" id="monto_recibir" readonly>
+        </div>
+        <div>
+            <label>Tipo de transacción</label>
+            <select>
+                <option>Seleccione</option>
+                <option>Transferencia</option>
+                <option>Yape</option>
+            </select>
+        </div>
+        <div>
+            <label>¿Viene de colaborador?</label>
+            <select id="colaborador_toggle" onchange="toggleColaborador()">
+                <option>No</option>
+                <option>Sí</option>
+            </select>
+        </div>
+        <div id="colaborador_section" class="hidden">
+            <label>Seleccionar colaborador</label>
+            <select>{% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}</select>
+        </div>
+        <div>
+            <label>Monto en moneda local</label>
+            <input type="number" id="monto" oninput="calcularMonto()">
+        </div>
+        <div>
+            <label>Cliente</label>
+            <input type="text">
+        </div>
+        <button type="submit" class="btn-primary">Registrar</button>
+    </form>
+</div>
 
 <script>
 function buscarTasa(){
     const origen=document.getElementById('pais_origen').value;
-    const destino=document.getElementById('pais_destino').value;
+    const destino=document.getElementById('pais_destino')?document.getElementById('pais_destino').value:"";
     if(origen && destino){
         fetch(`/obtener_tasa?origen=${origen}&destino=${destino}`).then(r=>r.json()).then(data=>{
             if(data.tasa!==null){document.getElementById('tasa').value=data.tasa;}
@@ -78,27 +72,10 @@ function buscarTasa(){
     }
 }
 function calcularMonto(){
-    const origen=document.getElementById('pais_origen').value;
-    const destino=document.getElementById('pais_destino').value;
     const monto=parseFloat(document.getElementById('monto').value);
     const tasa=parseFloat(document.getElementById('tasa').value);
-    const mult=[["Perú","Venezuela"],["Chile","Venezuela"],["Perú","Colombia"],["Perú","Chile"],["Chile","Colombia"]];
-    const div=[["Venezuela","Perú"],["Venezuela","Chile"],["Chile","Perú"],["Colombia","Chile"],["Colombia","Perú"],["Colombia","Venezuela"]];
-    const resInput=document.getElementById('monto_recibir');
-    const warning=document.getElementById('warning');
     if(!isNaN(monto)&&!isNaN(tasa)){
-        if(mult.some(p=>p[0]===origen&&p[1]===destino)){
-            resInput.value=(monto*tasa).toFixed(2);
-            resInput.readOnly=true;
-            warning.style.display="none";
-        } else if(div.some(p=>p[0]===origen&&p[1]===destino)){
-            resInput.value=(monto/tasa).toFixed(2);
-            resInput.readOnly=true;
-            warning.style.display="none";
-        } else {
-            resInput.readOnly=false;
-            warning.style.display="block";
-        }
+        document.getElementById('monto_recibir').value=(monto*tasa).toFixed(2);
     }
 }
 function toggleColaborador(){
