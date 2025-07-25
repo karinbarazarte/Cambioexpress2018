@@ -1,4 +1,6 @@
 
+{% extends 'dashboard.html' %}
+{% block content %}
 <h2>Gestión de Bancos: {{ pais }}</h2>
 <form id="formBanco">
 <input type="text" id="nombreBanco" placeholder="Nombre del banco">
@@ -31,3 +33,4 @@ async function eliminarBanco(id){
 }
 cargarBancos();
 </script>
+{% endblock %}
