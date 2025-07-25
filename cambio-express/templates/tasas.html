@@ -1,0 +1,40 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<h1>Gestión de Tasas</h1>
+<form id="form-tasa">
+    <select name="origen" required>
+        <option value="">País Origen</option>
+        {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+    </select>
+    <select name="destino" required>
+        <option value="">País Destino</option>
+        {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+    </select>
+    <input type="number" name="tasa" step="0.01" placeholder="Tasa" required>
+    <button type="submit">Guardar</button>
+</form>
+<table>
+    <thead>
+        <tr><th>Origen</th><th>Destino</th><th>Tasa</th><th>Acción</th></tr>
+    </thead>
+    <tbody id="tabla-tasas">
+        {% for (o,d), v in tasas.items() %}
+        <tr><td>{{o}}</td><td>{{d}}</td><td>{{v}}</td><td><button class="delete-btn" onclick="eliminarTasa('{{o}}','{{d}}')">Eliminar</button></td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+document.getElementById('form-tasa').addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData=new FormData(this);
+    fetch('/agregar_tasa',{method:'POST',body:formData}).then(r=>r.json()).then(()=>location.reload());
+});
+function eliminarTasa(origen,destino){
+    const formData=new FormData();
+    formData.append('origen',origen);
+    formData.append('destino',destino);
+    fetch('/eliminar_tasa',{method:'POST',body:formData}).then(r=>r.json()).then(()=>location.reload());
+}
+</script>
+{% endblock %}
