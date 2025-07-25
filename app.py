@@ -1,59 +1,7 @@
 from flask import Flask, render_template, request, jsonify
-import os
+import sqlite3
 
 app = Flask(__name__)
-
-# Datos temporales en memoria
-tasas = {}
-paises = ["Perú", "Venezuela", "Chile", "Colombia"]
-bancos = ["BCP", "Interbank", "Banesco", "Banco de Venezuela", "Scotiabank"]
-colaboradores = ["María", "Pedro", "Luisa"]
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/remesas')
-def remesas():
-    return render_template('remesas.html', paises=paises, bancos=bancos, colaboradores=colaboradores)
-
-@app.route('/tasas')
-def gestionar_tasas():
-    return render_template('tasas.html', paises=paises, tasas=tasas)
-
-@app.route('/agregar_tasa', methods=['POST'])
-def agregar_tasa():
-    origen = request.form.get('origen')
-    destino = request.form.get('destino')
-    valor = request.form.get('tasa')
-    if origen and destino and valor:
-        tasas[(origen, destino)] = float(valor)
-    return jsonify(success=True, tasas=tasas)
-
-@app.route('/eliminar_tasa', methods=['POST'])
-def eliminar_tasa():
-    origen = request.form.get('origen')
-    destino = request.form.get('destino')
-    if (origen, destino) in tasas:
-        del tasas[(origen, destino)]
-    return jsonify(success=True, tasas=tasas)
-
-@app.route('/obtener_tasa', methods=['GET'])
-def obtener_tasa():
-    origen = request.args.get('origen')
-    destino = request.args.get('destino')
-    if (origen, destino) in tasas:
-        return jsonify(tasa=tasas[(origen, destino)])
-    return jsonify(tasa=None)
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
-
-
-# ---- NUEVO: Configuración de Base de Datos y CRUD Bancos ----
-import sqlite3
-from flask import request, jsonify
 
 DB_NAME = 'cambio_express.db'
 
@@ -70,6 +18,18 @@ def init_db():
 @app.before_first_request
 def initialize():
     init_db()
+
+@app.route('/')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/remesas')
+def remesas():
+    return render_template('remesas.html')
+
+@app.route('/bancos/<pais>')
+def bancos(pais):
+    return render_template('bancos.html', pais=pais.capitalize())
 
 # API para Bancos
 @app.route('/api/bancos/<pais>', methods=['GET'])
@@ -109,3 +69,6 @@ def eliminar_banco(id):
     conn.commit()
     conn.close()
     return jsonify({"status": "ok"})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
