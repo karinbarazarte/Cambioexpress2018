@@ -46,7 +46,7 @@ def obtener_tasa():
         return jsonify(tasa=tasas[(origen, destino)])
     return jsonify(tasa=None)
     
-# Lista temporal para almacenar bancos por país
+# Datos temporales (simulación)
 bancos_data = {
     "venezuela": [],
     "peru": [],
@@ -54,19 +54,37 @@ bancos_data = {
     "colombia": []
 }
 
-@app.route('/bancos/<pais>', methods=['GET', 'POST'])
+# Página HTML
+@app.route('/bancos/<pais>')
 def bancos(pais):
-    if request.method == 'POST':
-        banco = request.form.get('banco')
-        if banco and banco not in bancos_data[pais]:
-            bancos_data[pais].append(banco)
-    return render_template('bancos.html', pais=pais, bancos=bancos_data[pais])
+    if pais not in bancos_data:
+        return "País no válido", 404
+    return render_template('bancos.html', pais=pais)
 
-@app.route('/bancos/<pais>/eliminar/<nombre>', methods=['GET'])
-def eliminar_banco(pais, nombre):
-    if nombre in bancos_data[pais]:
-        bancos_data[pais].remove(nombre)
-    return redirect(url_for('bancos', pais=pais))
+# API para gestionar bancos
+@app.route('/api/bancos/<pais>', methods=['GET'])
+def api_get_bancos(pais):
+    return jsonify(bancos_data.get(pais, []))
+
+@app.route('/api/bancos/<pais>', methods=['POST'])
+def api_add_banco(pais):
+    nombre = request.json.get('nombre')
+    if pais in bancos_data and nombre:
+        bancos_data[pais].append(nombre)
+    return jsonify(success=True)
+
+@app.route('/api/bancos/<pais>/<int:index>', methods=['DELETE'])
+def api_delete_banco(pais, index):
+    if pais in bancos_data and 0 <= index < len(bancos_data[pais]):
+        bancos_data[pais].pop(index)
+    return jsonify(success=True)
+
+@app.route('/api/bancos/<pais>/<int:index>', methods=['PUT'])
+def api_edit_banco(pais, index):
+    nuevo_nombre = request.json.get('nombre')
+    if pais in bancos_data and 0 <= index < len(bancos_data[pais]):
+        bancos_data[pais][index] = nuevo_nombre
+    return jsonify(success=True)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
