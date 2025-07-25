@@ -1,1 +1,23 @@
-<h1>Dashboard Premium Aquí (Diseño intacto)</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cambio Express 2018</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=6">
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://via.placeholder.com/140x60?text=LOGO" alt="Logo">
+        <div class="nav-links">
+            <a href="/" class="{% if request.path == '/' %}active{% endif %}">🏠 Dashboard</a>
+            <a href="/remesas" class="{% if request.path == '/remesas' %}active{% endif %}">💸 Remesas</a>
+            <a href="/tasas" class="{% if request.path == '/tasas' %}active{% endif %}">📈 Tasas</a>
+            <a href="#">🏦 Bancos</a>
+            <a href="#">👥 Clientes</a>
+        </div>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
