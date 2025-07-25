@@ -56,7 +56,7 @@ bancos_data = {
 
 # Página HTML
 @app.route('/bancos/<pais>')
-def bancos(pais):
+def mostrar_bancos(pais):
     return render_template('bancos.html', pais=pais)
 
 @app.route('/bancos/<pais>')
