@@ -12,12 +12,28 @@
             <a href="/" class="{% if request.path == '/' %}active{% endif %}">🏠 Dashboard</a>
             <a href="/remesas" class="{% if request.path == '/remesas' %}active{% endif %}">💸 Remesas</a>
             <a href="/tasas" class="{% if request.path == '/tasas' %}active{% endif %}">📈 Tasas</a>
-            <a href="#">🏦 Bancos</a>
+            <div class="submenu">
+    <a href="#" onclick="toggleSubmenu()">🏦 Bancos ▼</a>
+    <ul id="submenu-bancos" style="display:none; padding-left:15px;">
+        <li><a href="/bancos/venezuela">🇻🇪 Bancos Venezuela</a></li>
+        <li><a href="/bancos/peru">🇵🇪 Bancos Perú</a></li>
+        <li><a href="/bancos/chile">🇨🇱 Bancos Chile</a></li>
+        <li><a href="/bancos/colombia">🇨🇴 Bancos Colombia</a></li>
+    </ul>
+</div>
+
             <a href="#">👥 Clientes</a>
         </div>
     </div>
     <div class="content">
         {% block content %}{% endblock %}
     </div>
+    <script>
+function toggleSubmenu(){
+    const submenu = document.getElementById('submenu-bancos');
+    submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+
 </body>
 </html>
