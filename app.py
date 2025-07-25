@@ -57,6 +57,10 @@ bancos_data = {
 # Página HTML
 @app.route('/bancos/<pais>')
 def bancos(pais):
+    return render_template('bancos.html', pais=pais)
+
+@app.route('/bancos/<pais>')
+def bancos(pais):
     if pais not in bancos_data:
         return "País no válido", 404
     return render_template('bancos.html', pais=pais)
