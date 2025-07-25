@@ -1,101 +1,58 @@
 
-{% extends 'dashboard.html' %}
+{% extends "dashboard.html" %}
+
 {% block content %}
-<div class="form-container" style="
-    max-width: 800px; 
-    margin: 40px auto; 
-    background: #fff; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
-    padding: 30px;
-">
-    <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #333;">
-        🏦 Gestión de Bancos - {{ pais|capitalize }}
-    </h2>
+<h2>Gestión de Bancos - {{ pais|capitalize }}</h2>
+<form id="formBanco">
+    <input type="text" id="nombreBanco" placeholder="Nombre del banco" required>
+    <button type="submit" class="btn-primary">Agregar</button>
+</form>
 
-    <!-- Formulario -->
-    <form id="formBanco" style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <input type="text" id="nombreBanco" placeholder="Nombre del banco" required
-            style="flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
-        <button type="submit" style="
-            background: linear-gradient(90deg, #007bff, #00c6ff); 
-            color: white; font-size: 16px; 
-            padding: 12px 20px; 
-            border: none; border-radius: 8px; 
-            cursor: pointer; font-weight: bold;">
-            ➕ Agregar
-        </button>
-    </form>
+<table id="tablaBancos" class="styled-table">
+    <thead>
+        <tr>
+            <th>Nombre del Banco</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
-    <!-- Tabla -->
-    <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-            <tr style="background: #f8f9fa;">
-                <th style="padding: 12px; text-align: left;">Banco</th>
-                <th style="padding: 12px; text-align: left;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tablaBancos"></tbody>
-    </table>
-</div>
-
-<!-- JS -->
 <script>
 const pais = "{{ pais }}";
 
 async function cargarBancos() {
     const res = await fetch(`/api/bancos/${pais}`);
     const data = await res.json();
-    const tbody = document.getElementById('tablaBancos');
+    const tbody = document.querySelector("#tablaBancos tbody");
     tbody.innerHTML = "";
-    data.forEach((banco, i) => {
-        tbody.innerHTML += `
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 12px;">${banco}</td>
-                <td style="padding: 12px;">
-                    <button onclick="editarBanco(${i}, '${banco}')" style="
-                        background: #ffc107; 
-                        color: white; border: none; 
-                        padding: 8px 12px; 
-                        border-radius: 6px; cursor: pointer;">✏ Editar</button>
-                    <button onclick="eliminarBanco(${i})" style="
-                        background: #dc3545; 
-                        color: white; border: none; 
-                        padding: 8px 12px; 
-                        border-radius: 6px; cursor: pointer;">🗑 Eliminar</button>
-                </td>
-            </tr>
+    data.forEach(banco => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${banco.nombre}</td>
+            <td>
+                <button onclick="eliminarBanco('${banco.id}')">Eliminar</button>
+            </td>
         `;
+        tbody.appendChild(tr);
     });
 }
 
-document.getElementById('formBanco').addEventListener('submit', async (e) => {
+document.getElementById("formBanco").addEventListener("submit", async e => {
     e.preventDefault();
-    const nombre = document.getElementById('nombreBanco').value;
+    const nombreBanco = document.getElementById("nombreBanco").value;
     await fetch(`/api/bancos/${pais}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre: nombreBanco })
     });
-    document.getElementById('nombreBanco').value = '';
+    document.getElementById("nombreBanco").value = "";
     cargarBancos();
 });
 
-async function eliminarBanco(index) {
-    await fetch(`/api/bancos/${pais}/${index}`, { method: 'DELETE' });
+async function eliminarBanco(id) {
+    await fetch(`/api/bancos/${pais}/${id}`, { method: "DELETE" });
     cargarBancos();
-}
-
-async function editarBanco(index, actual) {
-    const nuevo = prompt("Nuevo nombre del banco:", actual);
-    if (nuevo) {
-        await fetch(`/api/bancos/${pais}/${index}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: nuevo })
-        });
-        cargarBancos();
-    }
 }
 
 cargarBancos();
