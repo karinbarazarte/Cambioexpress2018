@@ -45,6 +45,28 @@ def obtener_tasa():
     if (origen, destino) in tasas:
         return jsonify(tasa=tasas[(origen, destino)])
     return jsonify(tasa=None)
+    
+# Lista temporal para almacenar bancos por país
+bancos_data = {
+    "venezuela": [],
+    "peru": [],
+    "chile": [],
+    "colombia": []
+}
+
+@app.route('/bancos/<pais>', methods=['GET', 'POST'])
+def bancos(pais):
+    if request.method == 'POST':
+        banco = request.form.get('banco')
+        if banco and banco not in bancos_data[pais]:
+            bancos_data[pais].append(banco)
+    return render_template('bancos.html', pais=pais, bancos=bancos_data[pais])
+
+@app.route('/bancos/<pais>/eliminar/<nombre>', methods=['GET'])
+def eliminar_banco(pais, nombre):
+    if nombre in bancos_data[pais]:
+        bancos_data[pais].remove(nombre)
+    return redirect(url_for('bancos', pais=pais))
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
