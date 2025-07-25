@@ -1,68 +1,186 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<style>
+.form-container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.form-remesa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.form-remesa label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+.form-remesa input, .form-remesa select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+.form-remesa button {
+    grid-column: span 2;
+    padding: 12px;
+    background: linear-gradient(90deg, #05386b, #00bfa5);
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.warning {
+    grid-column: span 2;
+    color: #b30000;
+    display: none;
+    font-size: 14px;
+}
+.hidden { display: none; }
+</style>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registrar Remesa</title>
-<link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-<div class="content">
-<h2>Registrar Remesa</h2>
-<form>
-  <div class="form-grid">
-    <div>
-      <label>Nro de operación</label>
-      <input type="text" placeholder="Número de operación">
-    </div>
-    <div>
-      <label>Fecha</label>
-      <input type="date">
-    </div>
-    <div>
-      <label>País de origen</label>
-      <select><option>Seleccione</option></select>
-    </div>
-    <div>
-      <label>País destino</label>
-      <select><option>Seleccione</option></select>
-    </div>
-    <div>
-      <label>Banco</label>
-      <select><option>Seleccione</option></select>
-    </div>
-    <div>
-      <label>Tasa</label>
-      <input type="text">
-    </div>
-    <div>
-      <label>Monto depositado</label>
-      <input type="number">
-    </div>
-    <div>
-      <label>Monto a recibir</label>
-      <input type="number" readonly>
-    </div>
-    <div>
-      <label>Tipo de transacción</label>
-      <select><option>Seleccione</option></select>
-    </div>
-    <div>
-      <label>¿Viene de colaborador?</label>
-      <select><option>No</option><option>Sí</option></select>
-    </div>
-    <div>
-      <label>Seleccionar colaborador</label>
-      <select><option>Seleccione</option></select>
-    </div>
-    <div>
-      <label>Cliente</label>
-      <input type="text">
-    </div>
-  </div>
-  <button class="btn-primary">Registrar</button>
-</form>
+<div class="form-container">
+    <h2>Registrar Remesa</h2>
+    <form class="form-remesa">
+        <div>
+            <label>Nro de operación</label>
+            <input type="text" name="operacion">
+        </div>
+        <div>
+            <label>Fecha</label>
+            <input type="date" name="fecha">
+        </div>
+        <div>
+            <label>País de origen</label>
+            <select id="pais_origen" onchange="buscarTasa()">
+                <option value="">Seleccione</option>
+                {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>País destino</label>
+            <select id="pais_destino" onchange="buscarTasa()">
+                <option value="">Seleccione</option>
+                {% for pais in paises %}<option>{{ pais }}</option>{% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Banco</label>
+            <select>{% for banco in bancos %}<option>{{ banco }}</option>{% endfor %}</select>
+        </div>
+        <div>
+            <label>Tasa</label>
+            <input type="number" id="tasa" step="0.01" readonly>
+        </div>
+        <div>
+            <label>Monto depositado</label>
+            <input type="number" id="monto" oninput="calcularMonto()">
+        </div>
+        <div>
+            <label>Monto a recibir</label>
+            <input type="number" id="monto_recibir" readonly>
+        </div>
+        <div>
+            <label>Tipo de transacción</label>
+            <select>
+                <option>Seleccione</option>
+                <option>Transferencia</option>
+                <option>Yape</option>
+            </select>
+        </div>
+        <div>
+            <label>¿Viene de colaborador?</label>
+            <select id="colaborador_toggle" onchange="toggleColaborador()">
+                <option>No</option>
+                <option>Sí</option>
+            </select>
+        </div>
+        <div id="colaborador_section" class="hidden">
+            <label>Seleccionar colaborador</label>
+            <select>{% for c in colaboradores %}<option>{{ c }}</option>{% endfor %}</select>
+        </div>
+        <div>
+            <label>Cliente</label>
+            <input type="text">
+        </div>
+        <p id="warning" class="warning">No hay regla definida, edite manualmente el monto a recibir.</p>
+        <button type="submit">Registrar</button>
+    </form>
 </div>
-</body>
-</html>
+
+<script>
+async function buscarTasa(){
+    const origen=document.getElementById('pais_origen').value;
+    const destino=document.getElementById('pais_destino').value;
+    if(origen && destino){
+        try {
+            const response = await fetch(`/obtener_tasa?origen=${origen}&destino=${destino}`);
+            const data = await response.json();
+            if(data.tasa!==null){
+                document.getElementById('tasa').value=data.tasa;
+            } else {
+                document.getElementById('tasa').value='';
+            }
+            calcularMonto();
+        } catch(e){
+            console.error("Error obteniendo la tasa", e);
+        }
+    }
+}
+
+function calcularMonto(){
+    const origen=document.getElementById('pais_origen').value;
+    const destino=document.getElementById('pais_destino').value;
+    const monto=parseFloat(document.getElementById('monto').value);
+    const tasa=parseFloat(document.getElementById('tasa').value);
+    const resultInput=document.getElementById('monto_recibir');
+    const warning=document.getElementById('warning');
+
+    const multiplicar=[
+        ["Perú","Venezuela"],
+        ["Chile","Venezuela"],
+        ["Perú","Colombia"],
+        ["Perú","Chile"],
+        ["Chile","Colombia"]
+    ];
+    const dividir=[
+        ["Venezuela","Perú"],
+        ["Venezuela","Chile"],
+        ["Chile","Perú"],
+        ["Colombia","Chile"],
+        ["Colombia","Perú"],
+        ["Colombia","Venezuela"]
+    ];
+
+    if(!isNaN(monto)&&!isNaN(tasa)&&origen&&destino){
+        if(multiplicar.some(p=>p[0]===origen&&p[1]===destino)){
+            resultInput.value=(monto*tasa).toFixed(2);
+            resultInput.readOnly=true;
+            warning.style.display="none";
+        } else if(dividir.some(p=>p[0]===origen&&p[1]===destino)){
+            resultInput.value=(monto/tasa).toFixed(2);
+            resultInput.readOnly=true;
+            warning.style.display="none";
+        } else {
+            resultInput.readOnly=false;
+            warning.style.display="block";
+        }
+    } else {
+        resultInput.value="";
+        warning.style.display="none";
+    }
+}
+
+function toggleColaborador(){
+    const val=document.getElementById('colaborador_toggle').value;
+    const section=document.getElementById('colaborador_section');
+    section.className=(val==='Sí')?'':'hidden';
+}
+</script>
+{% endblock %}
