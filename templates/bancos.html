@@ -1,1 +1,33 @@
-<h2>Bancos</h2>
+
+<h2>Gestión de Bancos: {{ pais }}</h2>
+<form id="formBanco">
+<input type="text" id="nombreBanco" placeholder="Nombre del banco">
+<button type="submit">Agregar</button>
+</form>
+<table id="tablaBancos"><tbody></tbody></table>
+<script>
+const pais = "{{ pais }}";
+async function cargarBancos(){
+  const res = await fetch(`/api/bancos/${pais}`);
+  const data = await res.json();
+  const tbody = document.querySelector("#tablaBancos tbody");
+  tbody.innerHTML = "";
+  data.forEach(banco => {
+    tbody.innerHTML += `<tr><td>${banco.nombre}</td>
+    <td><button onclick="eliminarBanco(${banco.id})">Eliminar</button></td></tr>`;
+  });
+}
+document.getElementById('formBanco').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const nombre = document.getElementById('nombreBanco').value;
+  await fetch('/api/bancos', {method:'POST', headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({nombre:nombre, pais:pais})});
+  document.getElementById('nombreBanco').value = "";
+  cargarBancos();
+});
+async function eliminarBanco(id){
+  await fetch(`/api/bancos/${id}`, {method:'DELETE'});
+  cargarBancos();
+}
+cargarBancos();
+</script>
