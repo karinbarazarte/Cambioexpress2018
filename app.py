@@ -60,14 +60,25 @@ def get_bancos(pais):
 @app.route('/api/bancos/<pais>', methods=['POST'])
 def add_banco(pais):
     data = request.json
-    banco = {"id": str(len(bancos_data[pais]) + 1), "nombre": data['nombre']}
+    nombre = data.get('nombre', '').strip()
+    if not nombre:
+        return jsonify({"error": "Nombre requerido"}), 400
+    banco = {"id": str(len(bancos_data[pais]) + 1), "nombre": nombre}
     bancos_data[pais].append(banco)
-    return jsonify({"status": "ok"})
+    return jsonify(banco)
+
 
 @app.route('/api/bancos/<pais>/<id>', methods=['DELETE'])
 def delete_banco(pais, id):
-    bancos_data[pais] = [b for b in bancos_data[pais] if b["id"] != id]
+    bancos_data[pais] = [b for b in bancos_data[pais] if b["id"] != id
     return jsonify({"status": "deleted"})
+
+@app.route('/bancos/<pais>')
+def pagina_bancos(pais):
+    if pais not in ["venezuela", "peru", "chile", "colombia"]:
+        return "País no válido", 404
+    return render_template("bancos.html", pais=pais)
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
