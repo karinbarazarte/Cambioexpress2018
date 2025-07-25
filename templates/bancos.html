@@ -3,10 +3,11 @@
 {% block content %}
 <div class="form-container">
     <h2>Gestión de Bancos - {{ pais|capitalize }}</h2>
-    <form method="POST" style="margin-bottom: 20px;">
-        <input type="text" name="banco" placeholder="Nombre del banco" required>
-        <button type="submit">Agregar Banco</button>
+    <form id="formBanco">
+        <input type="text" id="nombreBanco" placeholder="Nombre del banco" required>
+        <button type="submit">Agregar</button>
     </form>
+    <br>
     <table>
         <thead>
             <tr>
@@ -14,17 +15,66 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
-            {% for banco in bancos %}
-            <tr>
-                <td>{{ banco }}</td>
-                <td>
-                    <a href="{{ url_for('eliminar_banco', pais=pais, nombre=banco) }}" onclick="return confirm('¿Eliminar este banco?')">Eliminar</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody id="tablaBancos"></tbody>
     </table>
 </div>
+
+<script>
+const pais = "{{ pais }}";
+
+// Cargar lista de bancos
+async function cargarBancos() {
+    const res = await fetch(`/api/bancos/${pais}`);
+    const data = await res.json();
+    const tbody = document.getElementById('tablaBancos');
+    tbody.innerHTML = "";
+    data.forEach((banco, i) => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${banco}</td>
+                <td>
+                    <button onclick="editarBanco(${i}, '${banco}')">Editar</button>
+                    <button onclick="eliminarBanco(${i})">Eliminar</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// Agregar banco
+document.getElementById('formBanco').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nombre = document.getElementById('nombreBanco').value;
+    await fetch(`/api/bancos/${pais}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre })
+    });
+    document.getElementById('nombreBanco').value = '';
+    cargarBancos();
+});
+
+// Eliminar banco
+async function eliminarBanco(index) {
+    await fetch(`/api/bancos/${pais}/${index}`, { method: 'DELETE' });
+    cargarBancos();
+}
+
+// Editar banco (prompt simple)
+async function editarBanco(index, actual) {
+    const nuevo = prompt("Nuevo nombre del banco:", actual);
+    if (nuevo) {
+        await fetch(`/api/bancos/${pais}/${index}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre: nuevo })
+        });
+        cargarBancos();
+    }
+}
+
+// Cargar al inicio
+cargarBancos();
+</script>
 {% endblock %}
 
