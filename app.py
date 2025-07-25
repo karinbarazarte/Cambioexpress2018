@@ -70,7 +70,7 @@ def add_banco(pais):
 
 @app.route('/api/bancos/<pais>/<id>', methods=['DELETE'])
 def delete_banco(pais, id):
-    bancos_data[pais] = [b for b in bancos_data[pais] if b["id"] != id
+    bancos_data[pais] = [b for b in bancos_data[pais] if b["id"] != id]
     return jsonify({"status": "deleted"})
 
 @app.route('/bancos/<pais>')
